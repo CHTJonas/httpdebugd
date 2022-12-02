@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"runtime"
 	"strings"
 	"time"
 
@@ -14,16 +15,16 @@ import (
 )
 
 type Server struct {
-	r       *mux.Router
-	srv     *http.Server
-	version string
-	rl      ratelimit.Limiter
+	r   *mux.Router
+	srv *http.Server
+	rl  ratelimit.Limiter
 }
 
 func NewServer(version string) *Server {
+	pwrBy := fmt.Sprintf("httpdebugd/%s Go/%s (+https://github.com/CHTJonas/httpdebugd)",
+		version, strings.TrimPrefix(runtime.Version(), "go"))
 	s := &Server{
-		version: version,
-		rl:      ratelimit.New(5),
+		rl: ratelimit.New(5),
 	}
 	r := mux.NewRouter().StrictSlash(true)
 
@@ -42,7 +43,7 @@ func NewServer(version string) *Server {
 
 	r.PathPrefix("/").Handler(assets.HandlerFunc)
 	r.Use(s.loggingMiddleware)
-	r.Use(serverHeaderMiddleware)
+	r.Use(serverHeaderMiddleware(pwrBy))
 	r.Use(proxyMiddleware)
 	r.Use(s.rateLimitingMiddleware)
 	s.r = r

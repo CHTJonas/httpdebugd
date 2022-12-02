@@ -43,14 +43,16 @@ func (serv *Server) rateLimitingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func serverHeaderMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("X-Powered-By", "https://github.com/CHTJonas/httpdebugd")
-		w.Header().Set("X-Robots-Tag", "noindex, nofollow")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Cache-Control", "no-store")
-		next.ServeHTTP(w, r)
-	})
+func serverHeaderMiddleware(pwrBy string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("X-Powered-By", pwrBy)
+			w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Cache-Control", "no-store")
+			next.ServeHTTP(w, r)
+		})
+	}
 }
 
 func proxyMiddleware(next http.Handler) http.Handler {
