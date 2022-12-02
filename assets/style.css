@@ -1,0 +1,29 @@
+html {
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: rgb(255, 255, 225);
+}
+
+body {
+  font-family: Verdana, sans-serif;
+  margin: 10px auto 10px auto;
+  max-width: 840px;
+  line-height: 1.5;
+  color: #444;
+}
+
+h1 {
+  padding-bottom: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #cdcdcd;
+  text-align: left;
+  padding: 8px;
+}

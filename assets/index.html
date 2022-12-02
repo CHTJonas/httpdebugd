@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHTJonas' HTTP connectivity debugging page</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <h1>CHTJonas' HTTP connectivity debugging page</h1>
+    <p>
+      This page will tell you your public IPv4 and IPv6 addresses as well as the status of your network's
+      RPKI filtering, as reported by <a href="https://isbgpsafeyet.com">Cloudflare</a>.
+      You will need to have JavaScript enabled for this to work.
+    </p>
+    <p>
+      Your IPv4 address appears to be <span id="ipv4addr">broken or you have no connectivity.</span><br>
+      Your IPv6 address appears to be <span id="ipv6addr">broken or you have no connectivity.</span><br>
+      Your network connection <span id="rpkiinvalids">appears</span> to filter RPKI invalid prefixes.
+    </p>
+    <h2>Useful local pages</h2>
+    <ul>
+      <li><a href="/dns.html">DNS connectivity debugging page</a></li>
+      <li><a href="/cudn.html">CUDN connectivity debugging page</a></li>
+    </ul>
+    <table>
+      <tr>
+        <th>Happy Eyeballs</th>
+        <th>IPv4</th>
+        <th>IPv6</th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/ipaddr">ipaddr</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/ipaddr">ipaddr</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/ipaddr">ipaddr</a></th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/hostname">hostname</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/hostname">hostname</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/hostname">hostname</a></th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/ptr">ptr</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/ptr">ptr</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/ptr">ptr</a></th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/iprev">iprev</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/iprev">iprev</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/iprev">iprev</a></th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/ping">ping</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/ping">ping</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/ping">ping</a></th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/mtr">mtr</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/mtr">mtr</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/mtr">mtr</a></th>
+      </tr>
+      <tr>
+        <td><a href="https://debug.charliejonas.co.uk/trace">trace</a></th>
+        <td><a href="https://ipv4.debug.charliejonas.co.uk/trace">trace</a></th>
+        <td><a href="https://ipv6.debug.charliejonas.co.uk/trace">trace</a></th>
+      </tr>
+    </table>
+    <h2>External sites</h2>
+    <ul>
+      <li><a href="https://speedtest.charliejonas.co.uk/">https://speedtest.charliejonas.co.uk/</a></li>
+      <li><a href="https://cloudflare.com/cdn-cgi/trace">https://cloudflare.com/cdn-cgi/trace</a></li>
+      <li><a href="http://test.aaplimg.com/debug/">http://test.aaplimg.com/debug/</a></li>
+      <li><a href="http://ping.online.net/">http://ping.online.net/</a></li>
+      <li><a href="http://ping6.online.net/">http://ping6.online.net/</a></li>
+      <li><a href="https://github-debug.com/">https://github-debug.com/</a></li>
+      <li><a href="https://test-ipv6.com/">https://test-ipv6.com/</a></li>
+      <li><a href="http://ec2-reachability.amazonaws.com/">http://ec2-reachability.amazonaws.com/</a></li>
+      <li><a href="https://rootcanary.org/test.html">https://rootcanary.org/test.html</a></li>
+    </ul>
+  </body>
+</html>

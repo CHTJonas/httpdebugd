@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHTJonas' CUDN connectivity debugging page</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="cudn.js"></script>
+  </head>
+  <body>
+    <h1>CHTJonas' CUDN connectivity debugging page</h1>
+    <p>
+      This page will report your IPv4 and IPv6 addresses as seen by servers both inside and outside the
+      <a href="https://help.uis.cam.ac.uk/service/network-services/datanetwork">Cambridge University Data Network</a>.
+      This is provided on a "best-effort" basis in the hope that it will be useful for those who use split-tunnel VPNs.
+      You will need to have JavaScript enabled for this to work.
+    </p>
+    <p class="address-block">
+      Your IPv4 address as seen from outside the CUDN appears to be <span id="ipv4addr">broken or you have no connectivity.</span><br>
+      Your IPv6 address as seen from outside the CUDN appears to be <span id="ipv6addr">broken or you have no connectivity.</span>
+    </p>
+    <p class="address-block">
+      Your IPv4 address as seen from inside the CUDN appears to be <span id="ipv4addr-cudn">broken or you have no connectivity.</span><br>
+      Your IPv6 address as seen from inside the CUDN appears to be <span id="ipv6addr-cudn">broken or you have no connectivity.</span>
+    </p>
+  </body>
+</html>
