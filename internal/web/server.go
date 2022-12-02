@@ -140,10 +140,14 @@ func (serv *Server) ping(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("ping", "-c", "30", ip)
 	stdout, err := cmd.Output()
 	if err != nil {
-		code := http.StatusInternalServerError
-		text := http.StatusText(code)
-		http.Error(w, text, code)
-		return
+		// packet loss exits with code 1
+		exitErr, isExitError := err.(*exec.ExitError)
+		if !(isExitError && exitErr.ExitCode() == 1) {
+			code := http.StatusInternalServerError
+			text := http.StatusText(code)
+			http.Error(w, text, code)
+			return
+		}
 	}
 	fmt.Fprint(w, string(stdout))
 }
