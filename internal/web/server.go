@@ -33,6 +33,7 @@ func NewServer(version string) *Server {
 	r.HandleFunc("/iprev", s.iprev)
 	r.HandleFunc("/ping", s.ping)
 	r.HandleFunc("/mtr", s.mtr)
+	r.HandleFunc("/whois", s.whois)
 	r.HandleFunc("/trace", s.trace)
 
 	for path, target := range permRedirects {
@@ -155,6 +156,19 @@ func (serv *Server) ping(w http.ResponseWriter, r *http.Request) {
 func (serv *Server) mtr(w http.ResponseWriter, r *http.Request) {
 	ip := getAddr(r)
 	cmd := exec.Command("mtr", "-c", "4", "-bez", "-w", ip)
+	stdout, err := cmd.Output()
+	if err != nil {
+		code := http.StatusInternalServerError
+		text := http.StatusText(code)
+		http.Error(w, text, code)
+		return
+	}
+	fmt.Fprint(w, string(stdout))
+}
+
+func (serv *Server) whois(w http.ResponseWriter, r *http.Request) {
+	ip := getAddr(r)
+	cmd := exec.Command("whois", ip)
 	stdout, err := cmd.Output()
 	if err != nil {
 		code := http.StatusInternalServerError
