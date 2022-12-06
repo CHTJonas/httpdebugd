@@ -1,14 +1,13 @@
 html {
-  height: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
+  display: flex;
+  justify-content: center;
   background-color: rgb(255, 255, 225);
 }
 
 body {
   font-family: Verdana, sans-serif;
-  margin: 10px auto 10px auto;
-  max-width: 840px;
+  margin: 8px;
+  max-width: 905px;
   line-height: 1.5;
   color: #444;
 }
