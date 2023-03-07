@@ -2,14 +2,14 @@ httpdebugd
 Copyright (c) 2022 Charlie Jonas
 All rights reserved.
 
-httpdebugd is licensed under a 2-clause BSD license and includes compiled code
+httpdebugd is licensed under the BSD 2-Clause License and includes compiled code
 from several well-known open source projects and initiatives. Third-party
 copyright notices are faithfully reproduced below for full attribution to the
 original authors and to comply with the license conditions.
 
 ---
 
-The Go programming language is licensed under a 3-clause BSD license.
+The Go programming language is licensed under the BSD 3-Clause License.
 
 Copyright (c) 2009 The Go Authors. All rights reserved.
 
@@ -41,8 +41,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ---
 
-The mux package from the Gorilla toolkit is licensed under a 3-clause BSD
-license.
+The mux package from the Gorilla toolkit is licensed under the BSD 3-Clause
+License.
 
 Copyright (c) 2012-2018 The Gorilla Authors. All rights reserved.
 
@@ -299,7 +299,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
---
+---
 
 The mousetrap library is licensed under the Apache License 2.0.
 
@@ -507,7 +507,7 @@ The mousetrap library is licensed under the Apache License 2.0.
 
 ---
 
-The pflag package is licensed under the BSD 3-Clause "New" or "Revised" License.
+The pflag package is licensed under the BSD 3-Clause License.
 
 Copyright (c) 2012 Alex Ogier. All rights reserved.
 Copyright (c) 2012 The Go Authors. All rights reserved.
