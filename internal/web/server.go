@@ -184,12 +184,24 @@ func (serv *Server) trace(w http.ResponseWriter, r *http.Request) {
 	printTracePairs(w, "time", time.Now().Unix())
 	printTracePairs(w, "client_ip", getAddr(r))
 	printTracePairs(w, "client_port", getPort(r))
+	if alpn := r.Header.Get("X-Forwarded-ALPN"); alpn != "" {
+		printTracePairs(w, "alpn", alpn)
+	}
 	if sni := r.Header.Get("X-Forwarded-SNI"); sni != "" {
 		printTracePairs(w, "sni", sni)
 	}
 	printTracePairs(w, "host", getHost(r))
 	printTracePairs(w, "https", r.URL.Scheme == "https")
 	printTracePairs(w, "protocol", r.Proto)
+	if sslProto := r.Header.Get("X-Forwarded-SSL-Proto"); sslProto != "" {
+		printTracePairs(w, "ssl_protocol", sslProto)
+	}
+	if kex := r.Header.Get("X-Forwarded-KEX"); kex != "" {
+		printTracePairs(w, "kex", kex)
+	}
+	if cipher := r.Header.Get("X-Forwarded-Cipher"); cipher != "" {
+		printTracePairs(w, "cipher", cipher)
+	}
 	printTracePairs(w, "method", r.Method)
 	printTracePairs(w, "path", r.URL.Path)
 	printTracePairs(w, "user_agent", r.UserAgent())
