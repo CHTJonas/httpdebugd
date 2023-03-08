@@ -181,6 +181,9 @@ func (serv *Server) whois(w http.ResponseWriter, r *http.Request) {
 }
 
 func (serv *Server) trace(w http.ResponseWriter, r *http.Request) {
+	if reqId := r.Header.Get("X-Request-Id"); reqId != "" {
+		printTracePairs(w, "request_id", reqId)
+	}
 	printTracePairs(w, "time", time.Now().Unix())
 	printTracePairs(w, "client_ip", getAddr(r))
 	printTracePairs(w, "client_port", getPort(r))
