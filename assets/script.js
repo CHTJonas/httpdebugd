@@ -1,4 +1,5 @@
 window.addEventListener('load', () => {
+
   fetch('https://ipv4.debug.charliejonas.co.uk/ipaddr')
     .then(response => {
       if (!response.ok) {
@@ -6,8 +7,13 @@ window.addEventListener('load', () => {
       }
       return response.text();
     })
-    .then(data => document.querySelector('#ipv4addr').textContent = data)
-    .catch(error => console.error(error));
+    .then(data => {
+      document.querySelector('#ipv4addr').textContent = data;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
   fetch('https://ipv6.debug.charliejonas.co.uk/ipaddr')
     .then(response => {
       if (!response.ok) {
@@ -15,8 +21,13 @@ window.addEventListener('load', () => {
       }
       return response.text();
     })
-    .then(data => document.querySelector('#ipv6addr').textContent = data)
-    .catch(error => console.error(error));
+    .then(data => {
+      document.querySelector('#ipv6addr').textContent = data;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
   fetch('https://invalid.rpki.cloudflare.com/')
     .then(response => {
       if (!response.ok) {
@@ -24,9 +35,12 @@ window.addEventListener('load', () => {
       }
       return response.text();
     })
-    .then(data => document.querySelector('#rpkiinvalids').textContent = 'does not appear')
+    .then(data => {
+      document.querySelector('#rpkiinvalids').textContent = 'does not appear';
+    })
     .catch(error => {
       console.error(error);
       console.info('Note: the above error is good! We failed successfully -- this is not a joke! ;P');
     });
+
 });
