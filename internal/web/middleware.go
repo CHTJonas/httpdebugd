@@ -5,6 +5,8 @@ import (
 	"log"
 	"net"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 type loggingResponseWriter struct {
@@ -50,6 +52,8 @@ func serverHeaderMiddleware(pwrBy string) func(http.Handler) http.Handler {
 			w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.Header().Set("Cache-Control", "no-store")
+			w.Header().Set("Clear-Site-Data", "\"*\"")
+			w.Header().Set("ETag", "\""+uuid.New().String()+"\"")
 			next.ServeHTTP(w, r)
 		})
 	}
