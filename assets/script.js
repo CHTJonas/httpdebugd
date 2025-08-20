@@ -1,6 +1,5 @@
 window.addEventListener('load', () => {
-
-  fetch('https://ipv4.debug.charliejonas.co.uk/ipaddr')
+  fetch('https://ipv4.debug.charliejonas.co.uk/ipaddr', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv4 network connection failed');
@@ -8,13 +7,14 @@ window.addEventListener('load', () => {
       return response.text();
     })
     .then(data => {
-      document.querySelector('#ipv4addr').textContent = data;
+      document.querySelector('#ipv4addr').textContent = "Your IPv4 address appears to be " + data;
     })
     .catch(error => {
+      document.querySelector('#ipv4addr').textContent = "You appear to have no IPv4 connectivity.";
       console.error(error);
     });
 
-  fetch('https://ipv6.debug.charliejonas.co.uk/ipaddr')
+  fetch('https://ipv6.debug.charliejonas.co.uk/ipaddr', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv6 network connection failed');
@@ -22,25 +22,48 @@ window.addEventListener('load', () => {
       return response.text();
     })
     .then(data => {
-      document.querySelector('#ipv6addr').textContent = data;
+      document.querySelector('#ipv6addr').textContent = "Your IPv6 address appears to be " + data;
     })
     .catch(error => {
+      document.querySelector('#ipv6addr').textContent = "You appear to have no IPv6 connectivity.";
       console.error(error);
     });
 
-  fetch('https://invalid.rpki.cloudflare.com/')
+  fetch('https://rpkitest4.nlnetlabs.net/', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
-        throw new Error('RPKI invalid prefix network connection failed');
+        throw new Error('IPv4 network connection failed');
       }
-      return response.text();
+      return response.json();
     })
     .then(data => {
-      document.querySelector('#rpkiinvalids').textContent = 'does not appear';
+      if (data['rpki-valid-passed'] && !data['rpki-invalid-passed']) {
+        document.querySelector('#ipv4rpki').textContent = "Your IPv4 connection appears to filter RPKI invalid prefixes";
+      } else {
+        document.querySelector('#ipv4rpki').textContent = "Your IPv4 connection does NOT appear to filter RPKI invalid prefixes";
+      }
     })
     .catch(error => {
+      document.querySelector('#ipv4rpki').textContent = "You appear to have no IPv4 connectivity.";
       console.error(error);
-      console.info('Note: the above error is good! We failed successfully -- this is not a joke! ;P');
     });
 
+  fetch('https://rpkitest6.nlnetlabs.net/', { cache: 'no-store' })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('IPv6 network connection failed');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data['rpki-valid-passed'] && !data['rpki-invalid-passed']) {
+        document.querySelector('#ipv6rpki').textContent = "Your IPv6 connection appears to filter RPKI invalid prefixes";
+      } else {
+        document.querySelector('#ipv6rpki').textContent = "Your IPv6 connection does NOT appear to filter RPKI invalid prefixes";
+      }
+    })
+    .catch(error => {
+      document.querySelector('#ipv6rpki').textContent = "You appear to have no IPv6 connectivity.";
+      console.error(error);
+    });
 });

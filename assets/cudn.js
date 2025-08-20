@@ -1,5 +1,5 @@
 window.addEventListener('load', () => {
-  fetch('https://ipv4.debug.charliejonas.co.uk/ipaddr')
+  fetch('https://ipv4.debug.charliejonas.co.uk/ipaddr', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv4 network connection failed');
@@ -8,7 +8,8 @@ window.addEventListener('load', () => {
     })
     .then(data => document.querySelector('#ipv4addr').textContent = data)
     .catch(error => console.error(error));
-  fetch('https://ipv6.debug.charliejonas.co.uk/ipaddr')
+
+  fetch('https://ipv6.debug.charliejonas.co.uk/ipaddr', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv6 network connection failed');
@@ -17,7 +18,8 @@ window.addEventListener('load', () => {
     })
     .then(data => document.querySelector('#ipv6addr').textContent = data)
     .catch(error => console.error(error));
-  fetch('https://ipv4-cudn.charliejonas.co.uk/ip.cgi')
+
+  fetch('https://ipv4-cudn.charliejonas.co.uk/ip.cgi', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv4 CUDN network connection failed');
@@ -26,7 +28,8 @@ window.addEventListener('load', () => {
     })
     .then(data => document.querySelector('#ipv4addr-cudn').textContent = data)
     .catch(error => console.error(error));
-  fetch('https://ipv6-cudn.charliejonas.co.uk/ip.cgi')
+
+  fetch('https://ipv6-cudn.charliejonas.co.uk/ip.cgi', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv6 CUDN network connection failed');

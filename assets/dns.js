@@ -3,7 +3,7 @@ function getEntropy() {
 }
 
 window.addEventListener('load', () => {
-  fetch('https://' + getEntropy() + '.whoami.ipv4-dns.charliejonas.co.uk')
+  fetch('https://' + getEntropy() + '.whoami.ipv4-dns.charliejonas.co.uk', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv4 network connection failed');
@@ -12,7 +12,8 @@ window.addEventListener('load', () => {
     })
     .then(data => document.querySelector('#ipv4addr').textContent = data)
     .catch(error => console.error(error));
-  fetch('https://' + getEntropy() + '.whoami.ipv6-dns.charliejonas.co.uk/')
+
+  fetch('https://' + getEntropy() + '.whoami.ipv6-dns.charliejonas.co.uk/', { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('IPv6 network connection failed');

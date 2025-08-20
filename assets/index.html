@@ -12,13 +12,14 @@
     <h1>CHTJonas' HTTP connectivity debugging page</h1>
     <p>
       This page will tell you your public IPv4 and IPv6 addresses as well as the status of your network's
-      RPKI filtering, as reported by <a href="https://isbgpsafeyet.com">Cloudflare</a>.
-      You will need to have JavaScript enabled for this to work.
+      RPKI filtering (as reported by <a href="https://www.nlnetlabs.nl/">NLnet Labs</a>). You will need to
+      have JavaScript enabled in your web browser for this site to work.
     </p>
     <p>
-      Your IPv4 address appears to be <span id="ipv4addr">broken or you have no connectivity.</span><br>
-      Your IPv6 address appears to be <span id="ipv6addr">broken or you have no connectivity.</span><br>
-      Your network connection <span id="rpkiinvalids">appears</span> to filter RPKI invalid prefixes.
+      <span id="ipv4addr">Determining your IPv4 address...</span><br>
+      <span id="ipv6addr">Determining your IPv6 address...</span><br>
+      <span id="ipv4rpki">Determining your IPv4 RPKI filtering...</span><br>
+      <span id="ipv6rpki">Determining your IPv6 RPKI filtering...</span>
     </p>
     <h2>Useful local pages</h2>
     <ul>
