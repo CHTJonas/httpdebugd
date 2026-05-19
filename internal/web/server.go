@@ -200,10 +200,20 @@ func (serv *Server) trace(w http.ResponseWriter, r *http.Request) {
 		printTracePairs(w, "ssl_protocol", sslProto)
 	}
 	if kex := r.Header.Get("X-Forwarded-KEX"); kex != "" {
-		printTracePairs(w, "kex", kex)
+		if kex == "0x11ec" {
+			printTracePairs(w, "kex", "X25519MLKEM768")
+		} else {
+			printTracePairs(w, "kex", kex)
+		}
 	}
 	if cipher := r.Header.Get("X-Forwarded-Cipher"); cipher != "" {
 		printTracePairs(w, "cipher", cipher)
+	}
+	if sigAlg := r.Header.Get("X-Forwarded-Sig-Alg"); sigAlg != "" {
+		printTracePairs(w, "sig_alg", sigAlg)
+	}
+	if sessionReused := r.Header.Get("X-Forwarded-Session-Reused"); sessionReused != "" {
+		printTracePairs(w, "session_reused", sessionReused)
 	}
 	printTracePairs(w, "method", r.Method)
 	printTracePairs(w, "path", r.URL.Path)
