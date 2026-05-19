@@ -30,11 +30,11 @@ build/linux/arm64: dir mod
 	export GOARCH=arm64
 	$(GOBUILD) -o bin/httpdebugd-linux-$(VER:v%=%)-arm64
 
-build/linux/i386: dir mod
+build/linux/386: dir mod
 	export CGO_ENABLED=0
 	export GOOS=linux
 	export GOARCH=386
-	$(GOBUILD) -o bin/httpdebugd-linux-$(VER:v%=%)-i386
+	$(GOBUILD) -o bin/httpdebugd-linux-$(VER:v%=%)-386
 
 build/linux/amd64: dir mod
 	export CGO_ENABLED=0
@@ -42,7 +42,7 @@ build/linux/amd64: dir mod
 	export GOARCH=amd64
 	$(GOBUILD) -o bin/httpdebugd-linux-$(VER:v%=%)-amd64
 
-build/linux: build/linux/armv7 build/linux/arm64 build/linux/i386 build/linux/amd64
+build/linux: build/linux/armv7 build/linux/arm64 build/linux/386 build/linux/amd64
 
 build/darwin/arm64: dir mod
 	export CGO_ENABLED=0
