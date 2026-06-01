@@ -3,6 +3,7 @@ package web
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os/exec"
 	"runtime"
@@ -76,6 +77,12 @@ func (serv *Server) hostname(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("dig", "+short", "-x", ip)
 	stdout, err := cmd.Output()
 	if err != nil {
+		exitErr, isExitError := err.(*exec.ExitError)
+		if isExitError {
+			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+		} else {
+			log.Printf("command '%s' failed: %s", cmd, err)
+		}
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
@@ -95,6 +102,11 @@ func (serv *Server) ptr(w http.ResponseWriter, r *http.Request) {
 		// NXDOMAIN exits with code 1
 		exitErr, isExitError := err.(*exec.ExitError)
 		if !(isExitError && exitErr.ExitCode() == 1) {
+			if isExitError {
+				log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+			} else {
+				log.Printf("command '%s' failed: %s", cmd, err)
+			}
 			code := http.StatusInternalServerError
 			text := http.StatusText(code)
 			http.Error(w, text, code)
@@ -109,6 +121,12 @@ func (serv *Server) iprev(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("dig", "+short", "-x", ip)
 	hostname, err := cmd.Output()
 	if err != nil {
+		exitErr, isExitError := err.(*exec.ExitError)
+		if isExitError {
+			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+		} else {
+			log.Printf("command '%s' failed: %s", cmd, err)
+		}
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
@@ -125,6 +143,12 @@ func (serv *Server) iprev(w http.ResponseWriter, r *http.Request) {
 	cmd = exec.Command("dig", "+short", strings.TrimSpace(string(hostname)), rrType)
 	ipResolved, err := cmd.Output()
 	if err != nil {
+		exitErr, isExitError := err.(*exec.ExitError)
+		if isExitError {
+			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+		} else {
+			log.Printf("command '%s' failed: %s", cmd, err)
+		}
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
@@ -145,6 +169,11 @@ func (serv *Server) ping(w http.ResponseWriter, r *http.Request) {
 		// packet loss exits with code 1
 		exitErr, isExitError := err.(*exec.ExitError)
 		if !(isExitError && exitErr.ExitCode() == 1) {
+			if isExitError {
+				log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+			} else {
+				log.Printf("command '%s' failed: %s", cmd, err)
+			}
 			code := http.StatusInternalServerError
 			text := http.StatusText(code)
 			http.Error(w, text, code)
@@ -159,6 +188,12 @@ func (serv *Server) mtr(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("mtr", "-c", "4", "-bez", "-w", ip)
 	stdout, err := cmd.Output()
 	if err != nil {
+		exitErr, isExitError := err.(*exec.ExitError)
+		if isExitError {
+			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+		} else {
+			log.Printf("command '%s' failed: %s", cmd, err)
+		}
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
@@ -172,6 +207,12 @@ func (serv *Server) whois(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("whois", ip)
 	stdout, err := cmd.Output()
 	if err != nil {
+		exitErr, isExitError := err.(*exec.ExitError)
+		if isExitError {
+			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
+		} else {
+			log.Printf("command '%s' failed: %s", cmd, err)
+		}
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
