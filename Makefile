@@ -4,6 +4,7 @@ SHELL := bash
 VER=$(shell git describe --tags --always --dirty)
 GO=$(shell which go)
 GOGET=$(GO) get
+GOINSTALL=$(GO) install
 GOMOD=$(GO) mod
 GOFMT=$(GO) fmt
 GOBUILD=$(GO) build -trimpath -mod=readonly -ldflags "-X main.version=$(VER:v%=%) -s -w -buildid="
@@ -13,6 +14,7 @@ dir:
 
 mod:
 	@$(GOMOD) download
+	@$(GOINSTALL) github.com/google/go-licenses@latest
 
 format:
 	@$(GOFMT) ./...
@@ -71,6 +73,9 @@ build: build/linux build/darwin build/windows
 license: dir
 	cp NOTICE bin/NOTICE
 	cp LICENSE bin/LICENSE
+	go-licenses save . --ignore github.com/CHTJonas/httpdebugd --save_path bin/licenses
+	(cd bin/licenses && zip -r ../third-party-licenses.zip . -i **/LICENSE **/LICENSE.* **/NOTICE **/NOTICE.* **/COPYING **/COPYING.*)
+	rm -rf bin/licenses
 
 clean:
 	@rm -rf bin
