@@ -1,5 +1,8 @@
-const v4addrs = new Set();
-const v6addrs = new Set();
+const scheme = 'https://';
+const v4domain = '.whoami.ipv4-dns.charliejonas.co.uk';
+const v6domain = '.whoami.ipv6-dns.charliejonas.co.uk';
+const v4 = { addrs: new Set(), dupes: 0 };
+const v6 = { addrs: new Set(), dupes: 0 };
 
 function getEntropy() {
   return (Math.floor(Math.random() * 2e16)).toString(16);
@@ -16,29 +19,37 @@ const setTextContent = (selector, set) => {
   }
 };
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-const makeRequest = (url, selector, set) => {
+const makeRequest = (url, selector, meta) => {
   return fetch(url, { cache: 'no-store' })
     .then(response => {
       if (!response.ok) {
         throw new Error('API request failed: ' + url);
       }
-      return response.text().trim();
+      return response.text();
     })
-    .then(async addr => {
-      set.add(addr.trim());
-      setTextContent(selector, set);
-      await sleep(100);
+    .then(addr => {
+      addr = addr.trim();
+      if (meta.addrs.has(addr)) {
+        meta.dupes = meta.dupes + 1;
+      } else {
+        meta.addrs.add(addr);
+        setTextContent(selector, meta.addrs);
+      }
     })
-    .catch(error => console.error(error));
-}
+    .catch(error => {
+      meta.dupes = meta.dupes + 1;
+      console.error(error);
+    });
+};
 
-const scheme = 'https://';
-const v4domain = '.whoami.ipv4-dns.charliejonas.co.uk';
-const v6domain = '.whoami.ipv6-dns.charliejonas.co.uk';
+const cueRequests = async (domain, selector, meta) => {
+  for (let i = 0; i < 10; i++) {
+    makeRequest(scheme + getEntropy() + domain, selector, meta);
+  }
+  while (meta.dupes < 10) {
+    await makeRequest(scheme + getEntropy() + domain, selector, meta);
+  }
+};
 
-for (let i = 0; i < 10; i++) {
-  makeRequest(scheme + getEntropy() + v4domain, '#ipv4addr', v4addrs);
-  makeRequest(scheme + getEntropy() + v6domain, '#ipv6addr', v6addrs);
-}
+cueRequests(v4domain, '#ipv4addr', v4);
+cueRequests(v6domain, '#ipv6addr', v6);
