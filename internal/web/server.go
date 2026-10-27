@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os/exec"
 	"runtime"
@@ -74,21 +75,22 @@ func (serv *Server) ipaddr(w http.ResponseWriter, r *http.Request) {
 
 func (serv *Server) hostname(w http.ResponseWriter, r *http.Request) {
 	ip := getAddr(r)
-	cmd := exec.Command("dig", "+short", "-x", ip)
-	stdout, err := cmd.Output()
+	addr, err := net.LookupAddr(ip)
 	if err != nil {
-		exitErr, isExitError := err.(*exec.ExitError)
-		if isExitError {
-			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
-		} else {
-			log.Printf("command '%s' failed: %s", cmd, err)
+		dnsErr, isDnsErr := err.(*net.DNSError)
+		if isDnsErr && dnsErr.IsNotFound {
+			return
 		}
+		log.Printf("reverse lookup of '%s' failed: %s", ip, err)
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
 		return
 	}
-	str := string(stdout)
+	if len(addr) == 0 {
+		return
+	}
+	str := addr[0]
 	str = strings.TrimSpace(str)
 	str = strings.TrimSuffix(str, ".")
 	fmt.Fprintln(w, str)
@@ -118,47 +120,40 @@ func (serv *Server) ptr(w http.ResponseWriter, r *http.Request) {
 
 func (serv *Server) iprev(w http.ResponseWriter, r *http.Request) {
 	ip := getAddr(r)
-	cmd := exec.Command("dig", "+short", "-x", ip)
-	hostname, err := cmd.Output()
+	hostnames, err := net.LookupAddr(ip)
 	if err != nil {
-		exitErr, isExitError := err.(*exec.ExitError)
-		if isExitError {
-			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
-		} else {
-			log.Printf("command '%s' failed: %s", cmd, err)
+		dnsErr, isDnsErr := err.(*net.DNSError)
+		if isDnsErr && dnsErr.IsNotFound {
+			fmt.Fprintln(w, "false")
+			return
 		}
+		log.Printf("reverse lookup of '%s' failed: %s", ip, err)
 		code := http.StatusInternalServerError
 		text := http.StatusText(code)
 		http.Error(w, text, code)
 		return
 	}
-	if len(hostname) == 0 {
-		fmt.Fprintln(w, "false")
-		return
-	}
-	rrType := "A"
-	if strings.ContainsAny(ip, ":") {
-		rrType = "AAAA"
-	}
-	cmd = exec.Command("dig", "+short", strings.TrimSpace(string(hostname)), rrType)
-	ipResolved, err := cmd.Output()
-	if err != nil {
-		exitErr, isExitError := err.(*exec.ExitError)
-		if isExitError {
-			log.Printf("command '%s' failed with exit code %d and output:\n%s", cmd, exitErr.ExitCode(), exitErr.Stderr)
-		} else {
-			log.Printf("command '%s' failed: %s", cmd, err)
+	for _, hostname := range hostnames {
+		addresses, err := net.LookupHost(hostname)
+		if err != nil {
+			dnsErr, isDnsErr := err.(*net.DNSError)
+			if isDnsErr && dnsErr.IsNotFound {
+				continue
+			}
+			log.Printf("lookup of '%s' failed: %s", hostname, err)
+			code := http.StatusInternalServerError
+			text := http.StatusText(code)
+			http.Error(w, text, code)
+			return
 		}
-		code := http.StatusInternalServerError
-		text := http.StatusText(code)
-		http.Error(w, text, code)
-		return
+		for _, address := range addresses {
+			if strings.TrimSpace(string(address)) == ip {
+				fmt.Fprintln(w, "true")
+				return
+			}
+		}
 	}
-	if strings.TrimSpace(string(ipResolved)) == ip {
-		fmt.Fprintln(w, "true")
-	} else {
-		fmt.Fprintln(w, "false")
-	}
+	fmt.Fprintln(w, "false")
 }
 
 func (serv *Server) ping(w http.ResponseWriter, r *http.Request) {
