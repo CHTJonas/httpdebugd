@@ -32,6 +32,7 @@ const makeRequest = (url, selector, meta) => {
       if (meta.addrs.has(addr)) {
         meta.dupes = meta.dupes + 1;
       } else {
+        meta.dupes = 0;
         meta.addrs.add(addr);
         setTextContent(selector, meta.addrs);
       }
