@@ -1,20 +1,24 @@
 const scheme = 'https://';
 const v4domain = '.whoami.ipv4-dns.charliejonas.co.uk';
 const v6domain = '.whoami.ipv6-dns.charliejonas.co.uk';
-const v4 = { addrs: new Set(), dupes: 0 };
-const v6 = { addrs: new Set(), dupes: 0 };
+const v4 = { addrs: new Set(), dupes: 0, type: "IPv4" };
+const v6 = { addrs: new Set(), dupes: 0, type: "IPv6" };
 
 function getEntropy() {
   return (Math.floor(Math.random() * 2e16)).toString(16);
 }
 
-const setTextContent = (selector, set) => {
+const setTextContent = (selector, meta) => {
   if (document.readyState === "complete") {
-    const result = [...set].reduce((str, addr) => str + "\n" + addr, "");
+    const result = [...meta.addrs].reduce((str, addr) => str + "\n" + addr, "");
     document.querySelector(selector).textContent = result.trim();
+    const noun = meta.addrs > 1 ? "address" : "addresses";
+    const verb = meta.addrs > 1 ? "appears" : "appear";
+    const text = `The ${meta.type} ${noun} of your recursive DNS server(s) ${verb} to be:`;
+    document.querySelector(selector).previousElementSibling.textContent = text;
   } else {
     window.addEventListener('load', () => {
-      setTextContent(selector, set);
+      setTextContent(selector, meta);
     });
   }
 };
@@ -34,7 +38,7 @@ const makeRequest = (url, selector, meta) => {
       } else {
         meta.dupes = 0;
         meta.addrs.add(addr);
-        setTextContent(selector, meta.addrs);
+        setTextContent(selector, meta);
       }
     })
     .catch(error => {
