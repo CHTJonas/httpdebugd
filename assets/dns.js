@@ -10,7 +10,7 @@ function getEntropy() {
 
 const setTextContent = (selector, meta) => {
   if (document.readyState === "complete") {
-    const result = [...meta.addrs].reduce((str, addr) => str + "\n" + addr, "");
+    const result = [...meta.addrs].sort().reduce((str, addr) => str + "\n" + addr, "");
     document.querySelector(selector).textContent = result.trim();
     const noun = meta.addrs > 1 ? "address" : "addresses";
     const verb = meta.addrs > 1 ? "appears" : "appear";
